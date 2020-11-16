@@ -11,3 +11,12 @@ In a terminal, run:
 As an added option, you can change the 'War Modifier'. The War Modifier is the amount of cards that each player has to draw when a 'WAR' is triggered. By increasing the War Modifier the game will end sooner. By defauly the War Modifier is set to 5.
 
     python ./main.py [WAR_MODIFIER]
+
+## TODOs
+
+### Track Statistics and Display
+
+[ ] Maximum cards a Player had
+[ ] Minimum cards a Player had
+[ ] Longest WAR
+[ ] Display statistics as Table at end
