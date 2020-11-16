@@ -1,6 +1,6 @@
 # WAR - The Card Game
 
-This program simulates a game of war with two players. Based on and heavily influenced by [2020 Complete Python Bootcamp From Zero to Hero in Python](https://www.udemy.com/course/complete-python-bootcamp/)
+This program simulates a game of war with two players. Based on and heavily influenced by Udemy's [2020 Complete Python Bootcamp From Zero to Hero in Python](https://www.udemy.com/course/complete-python-bootcamp/)
 
 ## Running the game
 
