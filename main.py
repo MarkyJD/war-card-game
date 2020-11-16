@@ -1,6 +1,7 @@
 from Deck import Deck
 from Player import Player
 from Card import Card
+import sys
 
 # Game Setup
 player_one = Player('p1')
@@ -16,6 +17,15 @@ for i in range(26):
 
 game_on = True
 round_num = 0
+
+war_amount = 3
+
+if len(sys.argv) > 1:
+    try:
+        war_amount = int(sys.argv[1])
+    except:
+        pass
+
 
 while game_on:
     round_num += 1
@@ -38,7 +48,6 @@ while game_on:
     player_two_cards = []
     player_two_cards.append(player_two.remove_one())
 
-    war_amount = 3
     # While at war
     at_war = True
     while at_war:
@@ -73,3 +82,5 @@ while game_on:
                 for num in range(war_amount):
                     player_one_cards.append(player_one.remove_one())
                     player_two_cards.append(player_two.remove_one())
+
+print(war_amount)
