@@ -16,7 +16,7 @@ As an added option, you can change the 'War Modifier'. The War Modifier is the a
 
 ### Track Statistics and Display
 
-[ ] Maximum cards a Player had
-[ ] Minimum cards a Player had
-[ ] Longest WAR
-[ ] Display statistics as Table at end
+- [ ] Maximum cards a Player had
+- [ ] Minimum cards a Player had
+- [ ] Longest WAR
+- [ ] Display statistics as Table at end
