@@ -2,85 +2,138 @@ from Deck import Deck
 from Player import Player
 from Card import Card
 import sys
+from results import print_game_results
 
-# Game Setup
-player_one = Player('p1')
-player_two = Player('p2')
-
-deck = Deck()
-deck.shuffle()
-
-# Deal cards out
-for i in range(26):
-    player_one.add_cards(deck.deal_one())
-    player_two.add_cards(deck.deal_one())
-
-game_on = True
-round_num = 0
-
+# Default WAR amount
 war_amount = 3
 
-if len(sys.argv) > 1:
+# Default games
+games = 1
+game_on = True
+results = {}
+
+# Accecpt CLI arguments to set war amount and optionally how many games are played
+if len(sys.argv) == 2:
+    # Ensure only numbers are entered and catch any TypeError
     try:
         war_amount = int(sys.argv[1])
     except:
         pass
+elif len(sys.argv) == 3:
+    # Ensure only numbers are entered and catch any TypeError
+    try:
+        games = int(sys.argv[2])
+    except:
+        pass
 
 
-while game_on:
-    round_num += 1
-    print(f'Round {round_num}')
+for game_number in range(games):
 
-    if len(player_one.all_cards) == 0:
-        print('Player 1 is out of cards! Player 2 wins!')
-        game_on = False
-        break
+    game_on = True
+    # Setup new game
+    player_one = Player('p1')
+    player_two = Player('p2')
 
-    if len(player_two.all_cards) == 0:
-        print('Player 1 is out of cards! Player 2 wins!')
-        game_on = False
-        break
+    player_one_won = False
+    player_two_won = False
 
-    # Start round:
-    player_one_cards = []
-    player_one_cards.append(player_one.remove_one())
+    # Create deck
+    deck = Deck()
+    deck.shuffle()
 
-    player_two_cards = []
-    player_two_cards.append(player_two.remove_one())
+    # Deal cards out
+    for i in range(26):
+        player_one.add_cards(deck.deal_one())
+        player_two.add_cards(deck.deal_one())
 
-    # While at war
-    at_war = True
-    while at_war:
-        if player_one_cards[-1].value > player_two_cards[-1].value:
+    # Track game stats
+    round_num = 0
+    war_counter = 0
+    total_war_counter = 0
+    war_longest = 0
 
-            player_one.add_cards(player_one_cards)
-            player_one.add_cards(player_two_cards)
-            at_war = False
+    while game_on:
 
-        elif player_one_cards[-1].value < player_two_cards[-1].value:
+        round_num += 1
 
-            player_two.add_cards(player_one_cards)
-            player_two.add_cards(player_two_cards)
-            at_war = False
+        if war_counter > war_longest:
+            war_longest = war_counter
 
-        else:
+        war_counter = 0
 
-            print('WAR!')
-            if len(player_one.all_cards) < war_amount:
-                print('Player 1 unable to go to war!')
-                print('Player 2 Wins!')
-                game_on = False
-                break
+        if len(player_one.all_cards) == 0:
+            # Player 2 Wins
+            game_on = False
+            break
 
-            elif len(player_two.all_cards) < war_amount:
-                print('Player 2 unable to go to war!')
-                print('Player 1 Wins!')
-                game_on = False
-                break
+        if len(player_two.all_cards) == 0:
+            # Player 1 Wins
+            game_on = False
+            break
+
+        # Start round:
+        player_one_cards = []
+        player_one_cards.append(player_one.remove_one())
+
+        player_two_cards = []
+        player_two_cards.append(player_two.remove_one())
+
+        # While at war
+        at_war = True
+        while at_war:
+
+            if player_one_cards[-1].value > player_two_cards[-1].value:
+
+                player_one.add_cards(player_one_cards)
+                player_one.add_cards(player_two_cards)
+                at_war = False
+
+            elif player_one_cards[-1].value < player_two_cards[-1].value:
+
+                player_two.add_cards(player_one_cards)
+                player_two.add_cards(player_two_cards)
+                at_war = False
 
             else:
-                for num in range(war_amount):
-                    player_one_cards.append(player_one.remove_one())
-                    player_two_cards.append(player_two.remove_one())
 
-print(war_amount)
+                total_war_counter += 1
+
+                if len(player_one.all_cards) < war_amount:
+
+                    player_two_won = True
+                    game_on = False
+                    break
+
+                elif len(player_two.all_cards) < war_amount:
+
+                    player_one_won = True
+                    game_on = False
+                    break
+
+                else:
+                    war_counter += 1
+                    for num in range(war_amount):
+                        player_one_cards.append(player_one.remove_one())
+                        player_two_cards.append(player_two.remove_one())
+
+    if player_one_won:
+        winning_player = player_one
+    else:
+        winning_player = player_two
+
+    game_result = {}
+    game_result['game_num'] = game_number + 1
+    game_result['winner'] = winning_player.name
+    game_result['rounds'] = round_num
+    game_result['war_count'] = total_war_counter
+    game_result['war_longest'] = war_longest
+    game_result['p1_highest'] = player_one.highest_total
+    game_result['p1_lowest'] = player_one.lowest_total
+    game_result['p2_highest'] = player_two.highest_total
+    game_result['p2_lowest'] = player_two.lowest_total
+
+    # Append the game result to the list of results
+    results[f'Game {game_number + 1}'] = game_result
+
+# Print results
+print_game_results(results)

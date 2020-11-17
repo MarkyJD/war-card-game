@@ -12,11 +12,15 @@ As an added option, you can change the 'War Modifier'. The War Modifier is the a
 
     python ./main.py [WAR_MODIFIER]
 
+Furthemore, you can optionally set how many games you wish to simulate. By Default Games is set to 1
+
+    python ./main.py [WAR_MODIFIER] [GAMES]
+
 ## TODOs
 
 ### Track Statistics and Display
 
-- [ ] Maximum cards a Player had
-- [ ] Minimum cards a Player had
-- [ ] Longest WAR
+- [x] Maximum cards a Player had
+- [x] Minimum cards a Player had
+- [x] Longest WAR
 - [ ] Display statistics as Table at end
