@@ -10,7 +10,7 @@ war_amount = 3
 # Default games
 games = 1
 game_on = True
-results = {}
+results = []
 
 # Accecpt CLI arguments to set war amount and optionally how many games are played
 if len(sys.argv) == 2:
@@ -63,11 +63,13 @@ for game_number in range(games):
 
         if len(player_one.all_cards) == 0:
             # Player 2 Wins
+            player_two_won = True
             game_on = False
             break
 
         if len(player_two.all_cards) == 0:
             # Player 1 Wins
+            player_one_won = True
             game_on = False
             break
 
@@ -118,22 +120,22 @@ for game_number in range(games):
 
     if player_one_won:
         winning_player = player_one
-    else:
+    elif player_two_won:
         winning_player = player_two
 
-    game_result = {}
-    game_result['game_num'] = game_number + 1
-    game_result['winner'] = winning_player.name
-    game_result['rounds'] = round_num
-    game_result['war_count'] = total_war_counter
-    game_result['war_longest'] = war_longest
-    game_result['p1_highest'] = player_one.highest_total
-    game_result['p1_lowest'] = player_one.lowest_total
-    game_result['p2_highest'] = player_two.highest_total
-    game_result['p2_lowest'] = player_two.lowest_total
+    game_result = []
+    game_result.append(game_number + 1)
+    game_result.append(winning_player.name)
+    game_result.append(round_num)
+    game_result.append(total_war_counter)
+    game_result.append(war_longest)
+    game_result.append(player_one.highest_total)
+    game_result.append(player_one.lowest_total)
+    game_result.append(player_two.highest_total)
+    game_result.append(player_two.lowest_total)
 
     # Append the game result to the list of results
-    results[f'Game {game_number + 1}'] = game_result
+    results.append(game_result)
 
 # Print results
 print_game_results(results)
